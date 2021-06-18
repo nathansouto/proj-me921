@@ -87,7 +87,7 @@ O objetivo da equipe de ataque é avançar o campo de 100 jardas através de fir
 
 Já o objetivo da defesa é impedir o avanço do ataque adversário com tackles (derrubar o jogador), fumbles (derrubar a bola), desviando passes ou até mesmo recuperando a posse de bola para o seu time com interceptações ou recuperações de fumbles. 
 
-E por último, a equipe de especialistas tem tanto o objetivo de atacar quanto o de defender, porém eles atuam na transição das equipes de ataque e defesa, como por exemplo: caso o time não consiga completar a primeira descida, mas ainda tem uma última tentativa para fazer, nesse momento é que, normalmente, a equipe especialistas entra em campo para tentar de alguma forma pontuar ou deixar a bola o mais longe possível para o outro time ter dificuldade de alcançar a sua End Zone (o time adversário que está recebendo essas jogadas também está com a equipe especialistas). Essas jogadas são os Kickoffs (pontapés de saída), Field Goals (chutar a bola no gol em formato de "Y"), Punts (chutes para frente) e os Extra Points (pontos extras) \cite{esportelandia}.
+E por último, a equipe de especialistas tem tanto o objetivo de atacar quanto o de defender, porém eles atuam na transição das equipes de ataque e defesa, como por exemplo: caso o time não consiga completar a primeira descida, mas ainda tem uma última tentativa para fazer, nesse momento é que, normalmente, a equipe especialistas entra em campo para tentar de alguma forma pontuar ou deixar a bola o mais longe possível para o outro time ter dificuldade de alcançar a sua End Zone (o time adversário que está recebendo essas jogadas também está com a equipe especialistas em campo). Essas jogadas são os Kickoffs (pontapés de saída), Field Goals (chutar a bola no gol em formato de "Y"), Punts (chutes para frente) e os Extra Points (pontos extras) \cite{esportelandia}.
 
 \vspace{-5mm}
 
@@ -101,7 +101,7 @@ Esse artigo não tem o intuito de analisar as estatísticas das equipes de espec
 
 Para isso, uma coleta de dados atráves de web scrapping foi feita no site \url{https://www.nfl.com/stats/team-stats/offense/passing/2020/reg/all} para poder acessar as estatísticas e com elas realizar a Análise de Componentes Principais (ACP) e posteriormente a Clusterização Hierárquica Aglomerativa. 
 
-Todos os processos foram feitos utilizando a linguagem R de programação através do software RStudio junto com alguns pacotes de funções. Todos os códigos estão em \cite{meucodigo}.
+Todos os processos foram feitos utilizando a linguagem R de programação através do software RStudio junto com alguns pacotes de funções. Todos os códigos estão no repositório do Github \cite{meucodigo}.
 
 \vspace{-5mm}
 
@@ -116,9 +116,9 @@ Para explicar os dois últimos critérios, seguem dois exemplos onde eles foram 
 \vspace{-5mm}
 
 \begin{enumerate}
-  \item A variável "Rate" nas estatísticas de passe no ataque é uma medida que utiliza outras 5 medidas para seu cálculo (tentativas de passes, passes completos, jardas aéreas, touchdowns e interceptações). Nesse caso a "medida-resumo" foi mantida e as outras foram retiradas. 
+  \item A variável "Rate" \  nas estatísticas de passe no ataque é uma medida que utiliza outras 5 medidas para seu cálculo (tentativas de passes, passes completos, jardas aéreas, touchdowns e interceptações). Nesse caso a "medida-resumo" \  Rate foi mantida e as outras foram retiradas. 
   \vspace{-3mm}
-  \item A variável "Lng" nas estatísticas de passe no ataque é a distância do passe mais longo do time. Porém, isso não define se o time tem bom passadores se em uma jogada houve um passe bom e em todas as outras não houveram. Nesse caso, a variável foi retirada.
+  \item A variável "Lng" \ nas estatísticas de passe no ataque é a distância do passe mais longo do time. Porém, isso não define se o time tem bom passadores se em uma jogada houve um passe bom e em todas as outras não houveram. Nesse caso, a variável foi retirada.
 \end{enumerate}
 
 \vspace{-5mm}
@@ -254,7 +254,7 @@ Com as distâncias calculadas, a clusterização hierárquica aglomerativa segue
 \vspace{-5mm}
 
 \begin{enumerate}
-  \item Ligue os clusteres $i,j$ com a menor distância. Este será o novo cluster $min\{i,j\}$
+  \item Ligue os clusteres $i,j$ com a menor distância. Este será o novo cluster $min\{i,j\}$.
   \vspace{-3mm}
   \item Ligue os clusteres $k, l$ com a menor distância máxima entre seus pontos. Se $k$ ou $l$ estiverem no primeiro agrupamento, eu ligo com o novo agrupamento.
   \vspace{-3mm}
@@ -489,7 +489,7 @@ Rate\_def\_passing & 86.00 & 94.60 & 98.80 & 112.40 & 87.20 \\
 
 \vspace{-3mm}
 
-Em um olhar mais geral, os dendrogramas presentes nas Figuras \ref{fig:dendo-ataque} e \ref{fig:dendo-defesa} são bons gráficos para comparar quais times são semelhantes entre si. Na Figura \ref{fig:dendo-ataque} é possível notar que os times Chiefs e Bills são os mais parecidos entre si. Isso é interessante, dado que os dois times foram os finalistas da conferência AFC, com o Chiefs vencendo a partida. E logo em seguida, o Buccaneers foi adicionado ao cluster de Chiefs e Bills. O Buccaneers foi o adversário do Chiefs no Super Bowl LIV, com a vitória do Buccaneers \cite{espn}.
+Em um olhar mais geral, os dendrogramas presentes nas Figuras \ref{fig:dendo-ataque} e \ref{fig:dendo-defesa} são bons gráficos para comparar quais times são semelhantes entre si. Na Figura \ref{fig:dendo-ataque} é possível notar que o Bills é o time mais parecido com o Chiefs. Isso é interessante, dado que os dois times foram os finalistas da conferência AFC, com o Chiefs vencendo a partida. E logo em seguida, o Buccaneers foi adicionado ao cluster de Chiefs e Bills. O Buccaneers foi o adversário do Chiefs no Super Bowl LIV, com a vitória do Buccaneers \cite{espn}.
 
 Analisando as Figuras \ref{fig:hist-ataque} e \ref{fig:hist-defesa} podemos localizar em quais clusteres cada time estão. Essas figuras auxiliam em entender um pouco as distâncias e como os times foram agrupados.
 

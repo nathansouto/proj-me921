@@ -501,5 +501,20 @@ O que é interessante notar é que o cluster 5 obteve médias boas e só é cons
 
 Com os gráficos produzidos é possível tirar diferentes conclusões sobre os agrupamentos e até localizar algum time desejado, ver em qual cluster ele foi alocado e também ver quais times mais se assemelham a ele.
 
+\vspace{-4mm}
+
 \bibliographystyle{plain}
 \bibliography{bibliography}
+
+```{r}
+rm(model)
+rm(pca)
+rm(sel_def)
+rm(tabela_ataque)
+rm(tabela_def)
+rm(grupos)
+rm(links_logo)
+rm(times)
+rm(plot_scree)
+```
+

@@ -1,0 +1,120 @@
+---
+title: "Coleta e Manipulação de Dados"
+author: "Nathan Brusamarello de Souto - 222854"
+date: "6/7/2021"
+output: pdf_document
+---
+
+```{r}
+library(rvest)
+library(tidyverse)
+```
+
+# Coleta
+
+Ataque
+```{r}
+tipos <- c("passing", "rushing", "receiving", "scoring", "downs")
+nfl_ataque <- NULL
+for (i in tipos) {
+  simple <- read_html(paste0("https://www.nfl.com/stats/team-stats/offense/" , i , "/2020/reg/all"))
+  tabelas <- simple %>% html_table(fill = TRUE)
+  primeira_tabela <- tabelas[[1]] %>% as.data.frame()
+  colnames(primeira_tabela)[-1] <- paste0(colnames(primeira_tabela)[-1], "_off_", i)
+  primeira_tabela <- primeira_tabela %>%
+    mutate(Team = sapply(strsplit(Team, "\n"), "[", 1))
+  if (i == "passing") {
+    nfl_ataque <- primeira_tabela
+  } else {
+    nfl_ataque <- left_join(nfl_ataque, primeira_tabela, by = c("Team"))
+  }
+}
+```
+
+Defesa
+```{r}
+tipos <- c("passing", "rushing", "receiving", "scoring", "tackles", "downs", "fumbles", "interceptions")
+nfl_defesa <- NULL
+for (i in tipos) {
+  simple <- read_html(paste0("https://www.nfl.com/stats/team-stats/defense/" , i , "/2020/reg/all"))
+  tabelas <- simple %>% html_table(fill = TRUE)
+  primeira_tabela <- tabelas[[1]] %>% as.data.frame()
+  colnames(primeira_tabela)[-1] <- paste0(colnames(primeira_tabela)[-1], "_def_", i)
+  primeira_tabela <- primeira_tabela %>%
+    mutate(Team = sapply(strsplit(Team, "\n"), "[", 1))
+  if (i == "passing") {
+    nfl_defesa <- primeira_tabela
+  } else {
+    nfl_defesa <- left_join(nfl_defesa, primeira_tabela, by = c("Team"))
+  }
+}
+```
+
+Jogadas Especiais
+```{r}
+tipos <- c("field-goals", "scoring", "kickoffs", "kickoff-returns", "punts", "punt-returns")
+nfl_especial <- NULL
+for (i in tipos) {
+  simple <- read_html(paste0("https://www.nfl.com/stats/team-stats/special-teams/" , i , "/2020/reg/all"))
+  tabelas <- simple %>% html_table(fill = TRUE)
+  primeira_tabela <- tabelas[[1]] %>% as.data.frame()
+  colnames(primeira_tabela)[-1] <- paste0(colnames(primeira_tabela)[-1], "_spe_", i)
+  primeira_tabela <- primeira_tabela %>%
+    mutate(Team = sapply(strsplit(Team, "\n"), "[", 1))
+  if (i == "field-goals") {
+    nfl_especial <- primeira_tabela
+  } else {
+    nfl_especial <- left_join(nfl_especial, primeira_tabela, by = c("Team"))
+  }
+}
+```
+
+# Manipulação
+
+Ataque
+```{r}
+summary(nfl_ataque)
+# Remoção dos T's
+
+nfl_ataque <- nfl_ataque %>%
+  mutate(Lng_off_passing = gsub("T", "", Lng_off_passing) %>% as.numeric(),
+         Lng_off_rushing = gsub("T", "", Lng_off_rushing) %>% as.numeric(),
+         Lng_off_receiving = gsub("T", "", Lng_off_receiving) %>% as.numeric())
+```
+
+Defesa
+```{r}
+summary(nfl_defesa)
+# Remoção dos T's
+
+nfl_defesa <- nfl_defesa %>%
+  mutate(Lng_def_passing = gsub("T", "", Lng_def_passing) %>% as.numeric(),
+         Lng_def_rushing = gsub("T", "", Lng_def_rushing) %>% as.numeric(),
+         Lng_def_receiving = gsub("T", "", Lng_def_receiving) %>% as.numeric(),
+         Lng_def_interceptions = gsub("T", "", Lng_def_interceptions) %>% as.numeric())
+```
+
+Jogadas Especiais
+```{r}
+summary(nfl_especial)
+# Remoção dos T's
+
+nfl_especial <- nfl_especial %>%
+  separate(`1-19 > A-M_spe_field-goals`, c("1-19 > A_spe_field-goals", "1-19 > M_spe_field-goals"), sep = "_", convert = T) %>%
+  separate(`20-29 > A-M_spe_field-goals`, c("20-29 > A_spe_field-goals", "20-29 > M_spe_field-goals"), sep = "_", convert = T) %>%
+  separate(`30-39 > A-M_spe_field-goals`, c("30-39 > A_spe_field-goals", "30-39 > M_spe_field-goals"), sep = "_", convert = T) %>%
+  separate(`40-49 > A-M_spe_field-goals`, c("40-49 > A_spe_field-goals", "40-49 > M_spe_field-goals"), sep = "_", convert = T) %>%
+  separate(`50+ > A-M_spe_field-goals`, c("50+ > A_spe_field-goals", "50+ > M_spe_field-goals"), sep = "_", convert = T) %>%
+  mutate(`Lng_spe_kickoff-returns` = gsub("T", "", `Lng_spe_kickoff-returns`) %>% as.numeric(),
+         `Lng_spe_punt-returns` = gsub("T", "", `Lng_spe_punt-returns`) %>% as.numeric()) %>%
+  mutate_at(vars(-("Team")),as.numeric)
+
+```
+
+
+```{r}
+write_csv(nfl_ataque, "nfl_ataque.csv")
+write_csv(nfl_defesa, "nfl_defesa.csv")
+write_csv(nfl_especial, "nfl_especial.csv")
+```
+
